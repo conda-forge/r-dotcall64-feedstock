@@ -1,4 +1,4 @@
-{% set version = '0.9-04' %}
+{% set version = "1.0-0" %}
 
 {% set posix = 'm2-' if win else '' %}
 {% set native = 'm2w64-' if win else '' %}
@@ -12,7 +12,7 @@ source:
   url:
     - https://cran.r-project.org/src/contrib/dotCall64_{{ version }}.tar.gz
     - https://cran.r-project.org/src/contrib/Archive/dotCall64/dotCall64_{{ version }}.tar.gz
-  sha256: 0e65a56c836aecd02380d9033989a05e391552eb6b3a9d16504a827b9faae662
+  sha256: 69318dc6b8aecc54d4f789c8105e672198363b395f1a764ebaeb54c0473d17ad
 
 build:
   number: 0
