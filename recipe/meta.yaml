@@ -1,5 +1,4 @@
-{% set version = "1.0-0" %}
-
+{% set version = '1.0-0' %}
 {% set posix = 'm2-' if win else '' %}
 {% set native = 'm2w64-' if win else '' %}
 
@@ -10,49 +9,56 @@ package:
 source:
   fn: dotCall64_{{ version }}.tar.gz
   url:
-    - https://cran.r-project.org/src/contrib/dotCall64_{{ version }}.tar.gz
-    - https://cran.r-project.org/src/contrib/Archive/dotCall64/dotCall64_{{ version }}.tar.gz
+    - {{ cran_mirror }}/src/contrib/dotCall64_{{ version }}.tar.gz
+    - {{ cran_mirror }}/src/contrib/Archive/dotCall64/dotCall64_{{ version }}.tar.gz
   sha256: 69318dc6b8aecc54d4f789c8105e672198363b395f1a764ebaeb54c0473d17ad
 
 build:
   merge_build_host: True  # [win]
-  number: 1
-  script: R CMD INSTALL --build .
-  skip: True  # [win32]
+  number: 2
+  skip: true  # [win32]
   rpaths:
     - lib/R/lib/
     - lib/
 
 requirements:
   build:
-    - posix                # [win]
-    - {{ compiler('fortran') }}        # [unix]
-    - {{ compiler('m2w64_fortran') }}  # [win]
-    - {{ compiler('c') }}        # [unix]
-    - {{ compiler('m2w64_c') }}  # [win]
+    - {{ compiler('c') }}        # [not win]
+    - {{ compiler('fortran') }}  # [not win]
+    - {{native}}toolchain        # [win]
+    - {{posix}}filesystem        # [win]
+    - {{posix}}make
+    - {{posix}}sed               # [win]
+    - {{posix}}coreutils         # [win]
+    - {{posix}}zip               # [win]
   host:
     - r-base
-
   run:
     - r-base
+    - {{native}}gcc-libs         # [win]
 
 test:
   commands:
-    - $R -e "library('dotCall64')"  # [not win]
+    - $R -e "library('dotCall64')"           # [not win]
     - "\"%R%\" -e \"library('dotCall64')\""  # [win]
-    - conda inspect linkages -p $PREFIX r-dotcall64  # [not win]
-    - conda inspect objects -p $PREFIX r-dotcall64  # [osx]
 
 about:
   home: https://git.math.uzh.ch/reinhard.furrer/dotCall64
   license: GPL (>= 2)
-  summary: ' An alternative version of .C() and .Fortran() supporting long vectors and 64-bit
-    integer type arguments. The provided interface .C64() features mechanisms the avoid
-    unnecessary copies of read-only or write-only arguments. This makes it a convenient
-    and fast interface to C/C++ and Fortran code.'
-
+  summary: Provides .C64(), which is an enhanced version of .C() and .Fortran() from the foreign
+    function interface. .C64() supports long vectors, arguments of type 64-bit integer,
+    and provides a mechanism to avoid unnecessary copies of read-only and write-only
+    arguments. This makes it a convenient and fast interface to C/C++ and Fortran code.
   license_family: GPL3
+  license_file: '{{ environ["PREFIX"] }}/lib/R/share/licenses/GPL-3'  # [unix]
+  license_file: '{{ environ["PREFIX"] }}\R\share\licenses\GPL-3'  # [win]
 
 extra:
   recipe-maintainers:
     - jsignell
+    - johanneskoester
+    - bgruening
+    - daler
+    - jdblischak
+    - cbrueffer
+    - dbast
