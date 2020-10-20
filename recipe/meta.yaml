@@ -7,7 +7,6 @@ package:
   version: {{ version|replace("-", "_") }}
 
 source:
-  fn: dotCall64_{{ version }}.tar.gz
   url:
     - {{ cran_mirror }}/src/contrib/dotCall64_{{ version }}.tar.gz
     - {{ cran_mirror }}/src/contrib/Archive/dotCall64/dotCall64_{{ version }}.tar.gz
@@ -15,8 +14,7 @@ source:
 
 build:
   merge_build_host: True  # [win]
-  number: 1005
-  skip: true  # [win32]
+  number: 1006
   rpaths:
     - lib/R/lib/
     - lib/
@@ -45,21 +43,16 @@ test:
 
 about:
   home: https://git.math.uzh.ch/reinhard.furrer/dotCall64
-  license: GPL (>= 2)
+  license: GPL-2.0-or-later
   summary: Provides .C64(), which is an enhanced version of .C() and .Fortran() from the foreign
     function interface. .C64() supports long vectors, arguments of type 64-bit integer,
     and provides a mechanism to avoid unnecessary copies of read-only and write-only
     arguments. This makes it a convenient and fast interface to C/C++ and Fortran code.
   license_family: GPL3
-  license_file: '{{ environ["PREFIX"] }}/lib/R/share/licenses/GPL-3'
+  license_file:
+    - '{{ environ["PREFIX"] }}/lib/R/share/licenses/GPL-3'
 
 extra:
   recipe-maintainers:
     - conda-forge/r
     - jsignell
-    - johanneskoester
-    - bgruening
-    - daler
-    - jdblischak
-    - cbrueffer
-    - dbast
