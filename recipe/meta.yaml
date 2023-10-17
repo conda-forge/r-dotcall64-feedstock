@@ -1,4 +1,4 @@
-{% set version = "1.0-2" %}
+{% set version = "1.1-0" %}
 {% set posix = 'm2-' if win else '' %}
 {% set native = 'm2w64-' if win else '' %}
 
@@ -10,11 +10,11 @@ source:
   url:
     - {{ cran_mirror }}/src/contrib/dotCall64_{{ version }}.tar.gz
     - {{ cran_mirror }}/src/contrib/Archive/dotCall64/dotCall64_{{ version }}.tar.gz
-  sha256: e0c7728aebbea5ebf06dfeefae4fc0a240e6dde7c2bf13f2ed041b91d337a4ac
+  sha256: 3484e32d5b2ff6e1b74963cc81e8dcb5c3dab0e1b1a5905898606cb6851370c5
 
 build:
   merge_build_host: true  # [win]
-  number: 2
+  number: 0
   rpaths:
     - lib/R/lib/
     - lib/
